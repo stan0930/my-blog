@@ -1,0 +1,124 @@
+:root {
+  --theme: #f7f8fb;
+  --entry: #ffffff;
+  --primary: #0f172a;
+  --secondary: #334155;
+  --tertiary: #e2e8f0;
+  --content: #1e293b;
+  --code-bg: #f1f5f9;
+  --border: #dbe3ef;
+  --radius: 14px;
+}
+
+.dark {
+  --theme: #0b1220;
+  --entry: #111a2c;
+  --primary: #e2e8f0;
+  --secondary: #9fb0c9;
+  --tertiary: #22304a;
+  --content: #d6deeb;
+  --code-bg: #0f1a2f;
+  --border: #2a3a57;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.08), transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(14, 165, 233, 0.08), transparent 35%),
+    var(--theme);
+}
+
+.main {
+  max-width: 860px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(247, 248, 251, 0.86);
+  border-bottom: 1px solid var(--border);
+}
+
+.dark .header {
+  background: rgba(11, 18, 32, 0.82);
+}
+
+.nav {
+  min-height: 64px;
+}
+
+.logo a {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.post-entry,
+.first-entry {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(2, 6, 23, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-entry:hover,
+.first-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(2, 6, 23, 0.12);
+}
+
+.entry-header h2 {
+  line-height: 1.35;
+}
+
+.home-info {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  background: linear-gradient(135deg, var(--entry), #e8f5ff);
+}
+
+.dark .home-info {
+  background: linear-gradient(135deg, var(--entry), #16243d);
+}
+
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+  letter-spacing: 0.1px;
+}
+
+.post-content pre {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.post-content code {
+  border-radius: 6px;
+}
+
+.paginav a,
+.button,
+#theme-toggle {
+  border-radius: 12px;
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 680px) {
+  .main {
+    padding: 0 14px;
+  }
+
+  .home-info {
+    padding: 18px;
+  }
+}
