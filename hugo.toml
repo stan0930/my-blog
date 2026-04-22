@@ -37,9 +37,22 @@ summaryLength = 100
   DateFormat = "2006-01-02"
   mainSections = ["posts"]
 
-  [params.homeInfoParams]
-    Title = "Stan 的技术小站"
-    Content = "记录我在 C++、算法和 Linux 上的学习与实践。"
+  [params.profileMode]
+    enabled = true
+    title = "Welcome to my blog! 👋"
+    subtitle = "Hi，这里是我记录 C++、算法和 Linux 笔记的地方。"
+    imageUrl = "images/avatar.svg"
+    imageWidth = 120
+    imageHeight = 120
+    imageTitle = "Stan"
+
+    [[params.profileMode.buttons]]
+      name = "文章"
+      url = "posts/"
+
+    [[params.profileMode.buttons]]
+      name = "关于我"
+      url = "about/"
 
   [params.editPost]
     URL = "https://github.com/stan0930/my-blog/tree/master/content"
@@ -61,6 +74,12 @@ summaryLength = 100
   name = "文章"
   url = "/posts/"
   weight = 20
+
+[[menu.main]]
+  identifier = "categories"
+  name = "分类"
+  url = "/categories/"
+  weight = 25
 
 [[menu.main]]
   identifier = "archives"
