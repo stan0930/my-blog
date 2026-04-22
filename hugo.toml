@@ -1,10 +1,12 @@
-baseURL = 'https://stan0930.github.io/'
+baseURL = 'https://stan0930.github.io/my-blog/'
 languageCode = 'zh-cn'
 title = "Stan's Blog"
 theme = "PaperMod"
+enableRobotsTXT = true
+summaryLength = 100
 
 [pagination]
-  pagerSize = 8
+  pagerSize = 10
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
@@ -12,24 +14,37 @@ theme = "PaperMod"
 [taxonomies]
   tag = "tags"
   category = "categories"
+  series = "series"
+
+[permalinks]
+  posts = "/posts/:slugorcontentbasename/"
 
 [params]
+  env = "production"
+  author = "Stan"
+  description = "记录编程、算法和 Linux 学习"
+  keywords = ["Blog", "C++", "Algorithm", "Linux", "Hugo"]
   defaultTheme = "auto"
   ShowReadingTime = true
+  ShowWordCount = true
   ShowShareButtons = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
   ShowToc = true
   TocOpen = false
   DateFormat = "2006-01-02"
-  author = "Stan"
-  description = "记录编程、算法和 Linux 学习"
-  keywords = ["Blog", "C++", "Algorithm", "Linux", "Hugo"]
+  mainSections = ["posts"]
 
   [params.homeInfoParams]
     Title = "Stan 的技术小站"
     Content = "记录我在 C++、算法和 Linux 上的学习与实践。"
+
+  [params.editPost]
+    URL = "https://github.com/stan0930/my-blog/tree/master/content"
+    Text = "编辑此页"
+    appendFilePath = true
 
   [[params.socialIcons]]
     name = "github"
@@ -48,16 +63,28 @@ theme = "PaperMod"
   weight = 20
 
 [[menu.main]]
-  identifier = "search"
-  name = "搜索"
-  url = "/search/"
-  weight = 30
-
-[[menu.main]]
   identifier = "archives"
   name = "归档"
   url = "/archives/"
+  weight = 30
+
+[[menu.main]]
+  identifier = "tags"
+  name = "标签"
+  url = "/tags/"
   weight = 40
+
+[[menu.main]]
+  identifier = "search"
+  name = "搜索"
+  url = "/search/"
+  weight = 50
+
+[[menu.main]]
+  identifier = "about"
+  name = "关于"
+  url = "/about/"
+  weight = 60
 
 [markup]
   [markup.highlight]
