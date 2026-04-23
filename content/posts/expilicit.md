@@ -18,50 +18,85 @@ TocOpen = false
 
 很多“看不懂为什么会调用这个函数”的 bug，根源都和隐式转换有关。
 
+## explicit 会出现在哪里，作用是什么
+
+你通常会在这三类声明里看到 `explicit`：
+
+1. 构造函数（最常见，尤其是单参数构造函数）
+2. 转换运算符（如 `operator bool()`）
+3. C++20 的条件 `explicit`（`explicit(condition)`）
+
+它的作用可以概括为两点：
+
+1. 禁止编译器自动做“偷偷的类型转换”
+2. 让调用者把转换意图写出来，减少歧义和误用
+
+一句话理解：`explicit` 不是不让你转换，而是要求你“明确地转换”。
+
 ## 1. 没有 explicit 会发生什么
 
-先看一个最典型的例子：
+先看图里这类 `Fraction` 代码（构造函数第二个参数有默认值）：
 
 ```cpp
-#include <iostream>
-
-class MyInt {
+class Fraction
+{
 public:
-    MyInt(int x) : value(x) {}
-    int value;
+    Fraction(int num, int den = 1)
+        : m_numerator(num), m_denominator(den) { }
+
+    operator double() const {
+        return (double)(m_numerator / m_denominator);
+    }
+
+    Fraction operator+(const Fraction& f) {
+        return Fraction(/* ... */);
+    }
+
+private:
+    int m_numerator;
+    int m_denominator;
 };
 
-void print(MyInt v) {
-    std::cout << v.value << '\n';
-}
-
 int main() {
-    print(10); // int 会被隐式转换成 MyInt
+    Fraction f(3, 5);
+    Fraction d2 = f + 4; // 这里会允许 int -> Fraction 的隐式转换
 }
 ```
 
-`print(10)` 能通过，是因为编译器看到了 `MyInt(int)`，自动帮你转了。  
+`f + 4` 能通过，是因为编译器看到了 `Fraction(int, int = 1)`，自动把 `4` 转成了 `Fraction(4, 1)`。  
 这在某些场景是方便，但在大型项目里经常会让行为变得“太魔法”。
 
 ## 2. 加上 explicit 后的变化
 
 ```cpp
-class MyInt {
+class Fraction
+{
 public:
-    explicit MyInt(int x) : value(x) {}
-    int value;
+    explicit Fraction(int num, int den = 1)
+        : m_numerator(num), m_denominator(den) { }
+
+    operator double() const {
+        return (double)(m_numerator / m_denominator);
+    }
+
+    Fraction operator+(const Fraction& f) {
+        return Fraction(/* ... */);
+    }
+
+private:
+    int m_numerator;
+    int m_denominator;
 };
 
-void print(MyInt v);
-
 int main() {
-    // print(10);        // 编译错误：不再允许隐式转换
-    print(MyInt(10));    // 必须显式写出来
+    Fraction f(3, 5);
+    // Fraction d2 = f + 4;      // 编译错误：不再允许隐式转换
+    Fraction d2 = f + Fraction(4); // 必须显式写出来
 }
 ```
 
 加了 `explicit` 以后，代码更“啰嗦”一点，但**意图清晰**：  
-我就是要构造一个 `MyInt`，而不是让编译器偷偷帮我转换。
+我就是要构造一个 `Fraction`，而不是让编译器偷偷帮我转换。
 
 ## 3. 哪些地方可以用 explicit
 
@@ -76,14 +111,18 @@ int main() {
 ### 3.3 转换运算符（C++11）
 
 ```cpp
-class Flag {
+class Fraction {
 public:
-    explicit operator bool() const { return ok; }
-    bool ok = true;
+    explicit operator double() const {
+        return static_cast<double>(m_numerator) / m_denominator;
+    }
+private:
+    int m_numerator = 0;
+    int m_denominator = 1;
 };
 ```
 
-这样 `if (f)` 仍然可用，但能避免一些你不希望的链式隐式转换。
+这样能减少 `Fraction` 被自动当成 `double` 参与表达式计算，避免你不希望的链式隐式转换。
 
 ## 4. 什么时候应该加 explicit
 
@@ -99,9 +138,9 @@ public:
 不是的，它只是不让“偷偷转换”，你依然可以正常构造：
 
 ```cpp
-MyInt a(10);      // OK
-MyInt b{10};      // OK
-// MyInt c = 10;  // 不行（这是拷贝初始化，涉及隐式转换）
+Fraction a(10);      // OK
+Fraction b{10};      // OK
+// Fraction c = 10;  // 不行（这是拷贝初始化，涉及隐式转换）
 ```
 
 ## 小结
