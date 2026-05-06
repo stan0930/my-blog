@@ -13,6 +13,7 @@ TocOpen = false
 
 ## 写在前面
 
+https://blog.csdn.net/weixin_62700590/article/details/125227121?ops_request_misc=elastic_search_misc&request_id=3cdab7e432abefe312c050db26930277&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-125227121-null-null.142^v102^pc_search_result_base4&utm_term=template&spm=1018.2226.3001.4187
 这篇是读 Effective C++ 里 template 相关内容时整理的笔记。  
 不追求把所有语法一次讲完，而是先抓住几个最容易影响代码质量的点：
 
